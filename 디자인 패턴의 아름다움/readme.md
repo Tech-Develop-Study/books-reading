@@ -1,3 +1,8 @@
+<br />
+<div style="text-align:center;">
+  <img src="../디자인 패턴의 아름다움/images/book_design_pattern.png" width="40%" height="30%" style="display: flex"></img>
+</div>
+
 ### 📖 진행할 책
 
 - [디자인 패턴의 아름다움 - 왕정](https://product.kyobobook.co.kr/detail/S000202093794)
