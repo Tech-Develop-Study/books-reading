@@ -1,0 +1,321 @@
+**Summary**
+
+<aside>
+💭 전략 패턴은 if-else 분기를 피하는 것이라고 생각하는 경우도 있는데, 이것은 숲을 보지 못하고 나무만 보는 것이다. 전략 패턴의 주요 기능은 **전략의 정의, 생성, 사용을 분리**하여 코드가 복잡해지는 것을 방지하고, 각각의 부분을 최대한 단순화하는 것이다.
+
+</aside>
+
+**Concept**
+
+전략 패턴은 **실행 중에 알고리즘 전략을 선택하여 객체 동작을 실시간으로 바뀌도록** 하는 행위 디자인 패턴이다.
+
+여기서 '전략'이란 일종의 알고리즘이 될 수 도 있으며, 기능이나 동작이 될 수도 있는데 특정한 목표를 수행하기 위한 행동 계획을 말한다. 
+
+즉, 어떤 일을 수행하는 동작들을 미리 전략으로 정의함으로써 **손쉽게 전략을 교체**할 수 있고 **알고리즘 변형이 빈번하게 필요한 경우에 적합**한 패턴이다.
+
+![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/56312e56-6954-49f3-b38c-ac3a67c39434/c0d70c59-ab84-46ee-9845-c1bc1dabb97d/Untitled.png)
+
+- 매우 복잡한 형태의 if-else분기와 switch-case 분기를 피하기 위해 사용된다.
+- 전략의 정의, 생성, 사용을 디커플링 할 수 있다.
+
+**Advantages**
+
+- 전략 알고리즘의 여러 버전 또는 변형이 필요할 때 클래스화를 통해 관리
+- 알고리즘 코드가 노출되어서는 안 되는 데이터에 엑세스 하거나 데이터를 활용할 때 캡슐화
+- 알고리즘의 동작이 런타임에 실시간으로 교체되어야 할 때
+
+**Disadvantages**
+
+- 알고리즘이 많아질수록 관리해야 할 객체의 수가 늘어난다는 단점이 있다. 만일 어플리케이션 특성 상 알고리즘이 많지 않고 자주 변경되지 않는다면 전략 클래스와 인터페이스를 만들 필요가 없다
+
+**Example Case**
+
+신용카드별로 결제를 진행하는 예제
+
+![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/56312e56-6954-49f3-b38c-ac3a67c39434/c7edfac5-bafb-4a8e-b3c1-bba196e98d28/Untitled.png)
+
+```java
+// 전략 - 추상화된 알고리즘
+interface PaymentStrategy {
+    void pay(int amount);
+}
+
+class KAKAOCardStrategy implements PaymentStrategy {
+    private String name;
+    private String cardNumber;
+    private String cvv;
+    private String dateOfExpiry;
+
+    public KAKAOCardStrategy(String nm, String ccNum, String cvv, String expiryDate) {
+        this.name = nm;
+        this.cardNumber = ccNum;
+        this.cvv = cvv;
+        this.dateOfExpiry = expiryDate;
+    }
+
+    @Override
+    public void pay(int amount) {
+        System.out.println(amount + "원 paid using KAKAOCard.");
+    }
+}
+
+class LUNACardStrategy implements PaymentStrategy {
+    private String emailId;
+    private String password;
+
+    public LUNACardStrategy(String email, String pwd) {
+        this.emailId = email;
+        this.password = pwd;
+    }
+
+    @Override
+    public void pay(int amount) {
+        System.out.println(amount + "원 paid using LUNACard.");
+    }
+}
+```
+
+```java
+// 컨텍스트 - 전략을 등록하고 실행
+class ShoppingCart {
+    List<Item> items;
+
+    public ShoppingCart() {
+        this.items = new ArrayList<Item>();
+    }
+
+    public void addItem(Item item) {
+        this.items.add(item);
+    }
+	
+    // 전략을 매개변수로 받아서 바로바로 전략을 실행
+    public void pay(PaymentStrategy paymentMethod) {
+        int amount = 0;
+        for (Item item : items) {
+            amount += item.price;
+        }
+        paymentMethod.pay(amount);
+    }
+}
+```
+
+```java
+class Item {
+    public String name;
+    public int price;
+
+    public Item(String name, int cost) {
+        this.name = name;
+        this.price = cost;
+    }
+}
+
+// 클라이언트 - 전략 제공/설정
+class User {
+    public static void main(String[] args) {
+        // 쇼핑카트 전략 컨텍스트 등록
+        ShoppingCart cart = new ShoppingCart();
+
+        // 쇼핑 물품
+        Item A = new Item("맥북 프로", 10000);
+        Item B = new Item("플레이스테이션", 30000);
+        cart.addItem(A);
+        cart.addItem(B);
+
+        // LUNACard로 결제 전략 실행
+        cart.pay(new LUNACardStrategy("kundol@example.com", "pukubababo")); // 4000원 paid using LUNACard.
+
+        // KAKAOBank로 결제 전략 실행
+        cart.pay(new KAKAOCardStrategy("Ju hongchul", "123456789", "123", "12/01")); // 4000원 paid using KAKAOCard.
+    }
+}
+```
+
+```java
+public class OrderService {
+    public double discount(Order order){
+        double discount = 0.0;
+        OrderType type = order.getType();
+
+        if(type.equals(OrderType.NORMAL)){
+
+        }else if(type.equals(OrderType.GROUPON)){
+
+        }else if(type.equals(OrderType.PROMOTION)){
+
+        }
+        return discount;
+    }
+}
+```
+
+```java
+//데이터의 크기에 따라 최적화된 각기 다른 정렬 알고리즘을 사용하는 로직
+public class Sorter {
+    private static final long GB = 1000*1000*1000;
+
+    public void sortFile(String filePath){
+        //logic
+        
+        File file = new File(filePath);
+        long fileSize = file.length();
+
+        if(fileSize < 6 * GB){
+            quickSort(filePath);
+        } else if (fileSize < 10 * GB) {
+            externalSort(filePath);
+        } else if (fileSize < 100 * GB) {
+            concurrentExternalSort(filePath);
+        }else {
+            mapreduceSort(filePath);
+        }
+
+    }
+
+    private void quickSort(String filePath){
+
+    }
+
+    private void externalSort(String filePath){
+
+    }
+
+    private void concurrentExternalSort(String filePath){
+
+    }
+
+    private void mapreduceSort(String filePath){
+
+    }
+}
+```
+
+```java
+public class SortingTool {
+    public static void main(String[] args) {
+        Sorter sorter = new Sorter();
+        sorter.sortFile("path");
+    }
+}
+```
+
+코드가 별로 크지 않고, 후속 요구 사항이 많이 않으면 코드를 유지보수 하는데 큰 어려움이 없다. 그러나 각 정렬 알고리즘 (~Sort() 메서드)의 코드가 상대적으로 복잡하고 그 크기도 크다는 것을 알게 될 것이다. 이 코드가 모두 Sorter 클래스에 배치되어 있으므로 클래스의 크기가 커지고 결국 코드의 가독성과 유지 보수에 영향을 미치게 된다. 
+
+Sorter 클래스가 너무 커지는 문제를 해결하기 위해 정렬 알고리즘을 별도의 클래스로 분할할 수 있다. 
+
+```java
+public interface ISortAlg {
+    void sort(String filePath);
+}
+
+//~Sort 클래스로 분할
+public class QuickSort implements ISortAlg {
+
+    @Override
+    public void sort(String filePath) {
+        //...
+    }
+}
+
+public class ExternalSort implements ISortAlg {
+
+    @Override
+    public void sort(String filePath) {
+        
+    }
+}
+
+//...
+
+package ch8.ex804_2;
+
+import java.io.File;
+
+public class Sorter {
+    private static final long GB = 1000*1000*1000;
+
+		//파일 sort 하기
+    public void sortFile(String filePath){
+        File file = new File(filePath);
+        long fileSize = file.length();
+
+        ISortAlg iSortAlg;
+
+        if(fileSize < 6 * GB){
+            iSortAlg = new QuickSort();
+        } else if (fileSize < 10 * GB) {
+            iSortAlg = new ExternalSort();
+        } else if (fileSize < 100 * GB) {
+            iSortAlg = new ConcurrentExternalSort();
+        }else {
+            iSortAlg = new MapReduceSort();
+        }
+
+        iSortAlg.sort(filePath);
+    }
+}
+```
+
+리팩터링 후 각 클래스의 코드 크기가 적절한 수준이 되었고 코드 구조가 너무 복잡하지 않아 코 드의 가독성과 유지 보수성이 향상되었다. 또한 **정렬 알고리즘을 주요 비즈니스 코드와 분리된 독립 클래스로 설계하여 정렬 알고리즘의 재사용성을 개선**했다. 이 단계는 실제로 전략 패턴의 첫 번째 단계로, 비즈니스 코드에서 전략 정의를 분리한 것이다.
+
+그러나 Sorter 클래스의 sortFile() 함수에는 파일 크기에 따른 if-else 분기가 존재한다. 물론 이 코드에서 사용 하는 if-else 분기는 그리 복잡하지 않으므로 그대로 놔두어도 무방하다. 하지만 if-else 분기를 제거하기 위해 테이블 조회 방법을 사용할 수 있으며, 그 코드는 다음과 같다.
+
+```java
+package ch8.ex804_3;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Sorter {
+
+    private static final long GB = 1000*1000*1000;
+    private static final List<AlgRange> algs = new ArrayList<>();
+
+    static {
+        algs.add (new AlgRange(8, 6*GB, SortAlgFactory.getSortAlg("QuickSort")));
+        algs.add (new AlgRange (6*GB, 10*GB, SortAlgFactory.getSortAlg("ExternalSort")));
+        algs.add (new AlgRange(10*GB, 100*GB, SortAlgFactory.getSortAlg("ConcurrentExternalSort")));
+        algs.add (new AlgRange(100*GB, Long. MAX_VALUE, SortAlgFactory.getSortAlg ("MapReduceSort")));
+    }
+
+    public void sortFile(String filePath) {
+        // 검증 논리 생략
+        File file = new File(filePath);
+        long fileSize = file.length();
+        ISortAlg sortAlg = null;
+        for (AlgRange algRange : algs) {
+            if (algRange.inRange(fileSize)) {
+                sortAlg = algRange.getAlg();
+                break;
+            }
+            sortAlg.sort(filePath);
+        }
+    }
+
+    private static class AlgRange{
+        private long start;
+        private long end;
+        private ch8.ex804_3.ISortAlg alg;
+
+        public AlgRange(long start, long end, ISortAlg alg) {
+            this.start = start;
+            this.end = end;
+            this.alg = alg;
+        }
+
+        public ISortAlg getAlg(){
+            return alg;
+        }
+
+        public boolean inRange(long size){
+            return size >= start && size < end;
+        }
+    }
+}
+
+```
+
+코드의 변수 부분을 전략 팩터리 클래스와 Sorter 클래스의 정적 섹션으로 분리했다. 
+
+새로운 정렬 알고리즘을 추가하려면 전략 팩터리 클래스와 Sorter 클래스의 정적 코드 세그먼트를 수정하면 된다.
