@@ -35,6 +35,58 @@
 
 ## 📙 앞으로 읽을 책
 
+## ‍💻 스터디원
+### 1.  [디자인 패턴의 아름다움](https://github.com/Tech-Develop-Study/books-reading/tree/main/%EB%94%94%EC%9E%90%EC%9D%B8%20%ED%8C%A8%ED%84%B4%EC%9D%98%20%EC%95%84%EB%A6%84%EB%8B%A4%EC%9B%80)
+<table>
+  <tr>
+    <td align="center" width="100px">
+      <a href="https://github.com/coorr" target="_blank">
+        <img src="https://avatars.githubusercontent.com/u/58505145?v=4" alt="김진성" />
+      </a>
+    </td>
+    <td align="center" width="100px">
+      <a href="https://github.com/0jiiino" target="_blank">
+        <img src="https://avatars.githubusercontent.com/u/64152520?v=4" alt="노영진" />
+      </a>
+    </td>
+    <td align="center" width="100px">
+      <a href="https://github.com/Sho1007" target="_blank">
+        <img src="https://avatars.githubusercontent.com/u/31685487?v=4" alt="오석현" />
+      </a>
+    </td>
+     <td align="center" width="100px">
+      <a href="https://github.com/jhd7130" target="_blank">
+        <img src="https://avatars.githubusercontent.com/u/78134917?v=4" alt="정희두" />
+      </a>
+    </td>
+    <td align="center" width="100px">
+      <a href="https://github.com/jkjkh1318" target="_blank">
+        <img src="https://avatars.githubusercontent.com/u/38885241?v=4" alt="황진경" />
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/endmoseung" target="_blank">김진성</a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/0jiiino" target="_blank">노영진</a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/Sho1007" target="_blank">오석현</a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/dmswl98" target="_blank">정희두</a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/jkjkh1318" target="_blank">황진경</a>
+    </td>
+  </tr>
+</table>
+
+<br />
+
+
 
 
 
